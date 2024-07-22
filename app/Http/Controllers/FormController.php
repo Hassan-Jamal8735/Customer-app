@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cookie;
 use Laravel\Prompts\SearchPrompt as Search;
+
 class FormController
 {
     // Display the customer registration form
@@ -25,13 +27,26 @@ class FormController
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:customer,email',
-            'password' => 'required|string|',
+            'email' => 'required|email|max:255',
+            'password' => 'required|string',
             'phone' => 'required|string|max:255',
             'address' => 'nullable|string|max:255',
             'gender' => 'nullable|in:m,f',
             'dob' => 'nullable|date',
+            // 'g-recaptcha-response' => 'required',
         ]);
+
+        // $response = Http::asForm()->post('htt   ps://www.google.com/recaptcha/api/siteverify', [
+        //     'secret' => config('services.recaptcha.secret_key'),
+        //     'response' => $request->input('g-recaptcha-response'),
+        //     'remoteip' => $request->ip(),
+        // ]);
+
+        // $responseBody = json_decode($response->getBody());
+
+        // if (!$responseBody->success || $responseBody->score < 0.5) {
+        //     return back()->withErrors(['captcha' => 'ReCAPTCHA verification failed. Please try again.']);
+        // }
 
         // Create a new customer instance and fill the fields
         $customer = new Customer();
@@ -73,23 +88,24 @@ class FormController
         $customer = Customer::find($id);
         if ($customer) {
             $customer->delete(); // This performs the soft delete
-           
+
         } else {
             Session::flash('error', 'Customer not found.');
         }
         return redirect()->route('customer.trashed');
     }
-    public function trashed(){
+    public function trashed()
+    {
         $trashCustomer = Customer::onlyTrashed()->get();
-        return view('customer-trashed',compact('trashCustomer'));
+        return view('customer-trashed', compact('trashCustomer'));
     }
-    public function restore($id){
-        $customer=Customer::withTrashed($id)->find($id);
-        if($customer){
+    public function restore($id)
+    {
+        $customer = Customer::withTrashed($id)->find($id);
+        if ($customer) {
             $customer->restore();
-        }
-        else{
-            Session::flash('error','Customer not found');
+        } else {
+            Session::flash('error', 'Customer not found');
         }
         return redirect()->route('customer.trashed');
     }
@@ -107,13 +123,21 @@ class FormController
 
     // search a customer
     public function searchCustomer(Request $request)
+    {
+        // $search = $request->input("search");
+
+        // $customers = Customer::
+        //     where('name', 'LIKE', "%{$search}%")->orWhere('email', 'LIKE', "%{$search}%")->get();
+
+        // return view('customer-view', compact('customers'));
+    }
+    public function ajaxSearch(Request $request)
 {
-    $search = $request->input("search");
-
-    $customers = Customer::
-        where('name', 'LIKE', "%{$search}%")->orWhere('email', 'LIKE', "%{$search}%")->get();
-
-    return view('customer-view', compact('customers'));
+    $query = $request->get('query');
+    $customers = Customer::where('name', 'LIKE', "%{$query}%")
+        ->orWhere('email', 'LIKE', "%{$query}%")
+        ->get();
+    return response()->json($customers);
 }
 
 

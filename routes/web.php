@@ -12,3 +12,4 @@ Route::delete('/customer/soft-delete/{id}',[FormController::class,'softDelete'])
 Route::get('/customer/trash',[FormController::class,'trashed'])->name('customer.trashed');
 Route::patch('/customer/restore/{id}',[FormController::class,'restore'])->name('customer.restore');
 Route::post('/customer/search',[FormController::class,'searchCustomer'])->name('customer.search');
+Route::get('/customer/ajax-search',[FormController::class,'ajaxSearch'])->name('customer.ajaxSearch');

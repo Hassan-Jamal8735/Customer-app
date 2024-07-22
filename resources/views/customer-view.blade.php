@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Customers</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -33,8 +35,11 @@
     </nav>
 
     <div class="container mt-5">
+    <div class="input-group mb-4">
+            <input type="text" id="search" class="form-control" placeholder="Search customers...">
+        </div>
         
-        <form action="{{ route('customer.search') }}" method="POST" class="mb-4">
+        <!-- <form action="{{ route('customer.search') }}" method="POST" class="mb-4">
         @csrf
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Search customers...">
@@ -49,7 +54,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 
             </div>
-        @endif
+        @endif -->
 
         <div class="card">
             <div class="card-header">
@@ -69,7 +74,7 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="customer-table-body">
                         @foreach($customers as $customer)
                             <tr>
                                 <td>{{ $customer->id }}</td>
@@ -108,6 +113,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/search.js') }}"></script>
 </body>
 
 </html>
