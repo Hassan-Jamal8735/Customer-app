@@ -70,7 +70,7 @@
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Gender</th>
-                            <th>DOB</th>
+                            <th class="px-5">DOB</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -86,21 +86,21 @@
                                 <td>{{ $customer->dob }}</td>
                                 <td>
                                     <a href="{{ route('customer.edit', ['id' => $customer->id]) }}"
-                                        class="btn btn-primary btn-sm">Edit</a>
+                                        class="btn btn-primary btn-sm my-2">Edit</a>
                                     <form action="{{ route('customer.softDelete', ['id' => $customer->id]) }}"
                                         method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-warning btn-sm"
-                                            onclick="return confirm('Are you sure you want to move this customer to trash?')">Move
+                                        <button type="submit" class="btn my-2 btn-warning btn-sm"
+                                            onclick="">Move
                                             to Trash</button>
                                     </form>
                                     <form action="{{ route('customer.delete', ['id' => $customer->id]) }}"
                                         method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want to permanently delete this customer?')">Permanent
+                                        <button type="submit" class="btn my-2 btn-danger btn-sm"
+                                            onclick="">Permanent
                                             Delete</button>
                                     </form>
                                 </td>

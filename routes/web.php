@@ -2,8 +2,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 
-Route::get('/customer/form', [FormController::class, 'customerForm'])->name('customer.form');
-Route::post('/customer/form', [FormController::class, 'customerSubmit'])->name('customer.create');
+Route::get('/', [FormController::class, 'customerForm'])->name('customer.form');
+Route::post('/', [FormController::class, 'customerSubmit'])->name('customer.create');
 Route::get('/customer/view', [FormController::class, 'showCustomers'])->name('customer.view');
 Route::get('/customer/edit/{id}', [FormController::class, 'editCustomer'])->name('customer.edit');
 Route::post('/customer/update/{id}', [FormController::class, 'updateCustomer'])->name('customer.update');

@@ -73,7 +73,7 @@
                                             <form action="{{ route('customer.restore', ['id' => $customer->id]) }}" method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to restore this customer?')">Restore</button>
+                                                <button type="submit" class="btn btn-success my-2 btn-sm" onclick="return confirm('Are you sure you want to restore this customer?')">Restore</button>
                                             </form>
                                             <form action="{{ route('customer.delete', ['id' => $customer->id]) }}" method="POST" style="display: inline-block;">
                                                 @csrf
